@@ -1,6 +1,6 @@
 using System;
 
-namespace LeapForward.IdleHelpers
+namespace Leap.Forward.IdleHelpers
 {
     /// <summary>
     /// Represents a high-precision number using scientific notation ($Mantissa \times 10^{Exponent}$).
@@ -307,7 +307,11 @@ namespace LeapForward.IdleHelpers
         #endregion
 
         /// <summary> Returns a string formatted in scientific notation (e.g., "1.23e45"). </summary>
-        public override string ToString() => $"{Mantissa:F2}e{Exponent}";
+        public override string ToString()
+        {
+            if (Exponent == 0) return Mantissa.ToString();
+            return $"{Mantissa:F2}e{Exponent}";
+        }
 
         /// <summary>
         /// Determines whether the specified object is equal to the current BigNumber instance.
