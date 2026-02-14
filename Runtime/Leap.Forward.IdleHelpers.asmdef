@@ -1,0 +1,17 @@
+{
+    "name": "Leap.Forward.IdleHelpers",
+    "rootNamespace": "Leap.Forward",
+    "references": [
+        "VContainer",
+        "UniTask"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
