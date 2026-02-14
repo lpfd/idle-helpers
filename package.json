@@ -1,0 +1,9 @@
+{
+	"name": "leap.forward.idle.helpers",
+	"version": "0.0.1",
+	"displayName": "Idle Helpers (Leap Forward)",
+	"description": "Set of helper classes for Idle games.",
+	"unity": "2022.3",
+	"dependencies": {
+	}
+}
