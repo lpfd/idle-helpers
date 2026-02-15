@@ -1,4 +1,5 @@
 ﻿using Leap.Forward.IdleHelpers;
+using System;
 using System.ComponentModel;
 
 namespace Leap.Forward.Idle.CodeGen.Tests
@@ -38,7 +39,33 @@ namespace Leap.Forward.Idle.CodeGen.Tests
         }
     }
 
-    public struct TestStruct
+    public struct TestStruct : IEquatable<TestStruct>
     {
+        public int Field;
+
+        public override bool Equals(object? obj)
+        {
+            return obj is TestStruct @struct && Equals(@struct);
+        }
+
+        public bool Equals(TestStruct other)
+        {
+            return Field == other.Field;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Field);
+        }
+
+        public static bool operator ==(TestStruct left, TestStruct right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(TestStruct left, TestStruct right)
+        {
+            return !(left == right);
+        }
     }
 }
