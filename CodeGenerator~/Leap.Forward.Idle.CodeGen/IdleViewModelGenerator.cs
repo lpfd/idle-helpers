@@ -8,6 +8,16 @@ using System.Text.RegularExpressions;
 
 namespace Leap.Forward.Idle.CodeGen
 {
+    /// <summary>
+    /// Generates partial view model classes for types annotated with [IdleViewModelAttribute], enabling property
+    /// binding and UI event handling in Unity UI Toolkit applications.
+    /// </summary>
+    /// <remarks>This generator creates properties for fields marked with [IdlePropertyAttribute], ensuring
+    /// proper encapsulation and property change notification. It also wires up methods annotated with
+    /// [ClickHandlerAttribute] to UI button click events and supports property update dependencies via
+    /// [PropertyUpdaterAttribute]. Use this generator to simplify data binding and event handling in Unity UI
+    /// workflows. Generated classes are intended for use with Unity's UIDocument and VisualElement data binding
+    /// features.</remarks>
     [Generator]
     public class IdleViewModelGenerator : IIncrementalGenerator
     {
@@ -56,10 +66,6 @@ namespace Leap.Forward.Idle.CodeGen
             var hasNS = !classSymbol.ContainingNamespace.IsGlobalNamespace;
 
             var sourceBuilder = new StringBuilder();
-            sourceBuilder.AppendLine("using UnityEngine.UIElements;");
-            sourceBuilder.AppendLine("using UnityEngine;");
-            sourceBuilder.AppendLine("using Unity.Properties;");
-
             if (hasNS)
             {
                 sourceBuilder.AppendLine($"namespace {ns}");
@@ -131,9 +137,20 @@ namespace Leap.Forward.Idle.CodeGen
                 var field = kv.Value;
 
                 string typeName = field.Type.ToDisplayString();
+                List<string> updateMethods;
+                var methodRemarks = dependencyMap.TryGetValue(propertyName, out updateMethods) && updateMethods.Count > 0
+                    ? $"Setting this property will also trigger updates to: {string.Join(", ", updateMethods)}."
+                    : "No dependent updates.";
 
                 sourceBuilder.AppendLine($@"
-        [CreateProperty]
+        /// <summary>
+        /// Wrapper property for the field '{field.Name}' marked with [IdleProperty]. This property raises
+        /// PropertyChanged events and triggers any dependent update methods when set.
+        /// </summary>
+        /// <remarks>
+        /// {methodRemarks}
+        /// </remarks>
+        [Unity.Properties.CreateProperty]
         public {typeName} {propertyName}
         {{
             get => {field.Name};
@@ -143,7 +160,7 @@ namespace Leap.Forward.Idle.CodeGen
                 {{
                     {field.Name} = value;
                     OnPropertyChanged(nameof({propertyName}));");
-                if (dependencyMap.TryGetValue(propertyName, out var updateMethods))
+                if (dependencyMap.TryGetValue(propertyName, out updateMethods))
                 {
                     foreach (var method in updateMethods)
                     {
@@ -157,7 +174,7 @@ namespace Leap.Forward.Idle.CodeGen
             }
 
            
-            sourceBuilder.AppendLine("        public void BindTo(UIDocument document)");
+            sourceBuilder.AppendLine("        public void BindTo(UnityEngine.UIElements.UIDocument document)");
             sourceBuilder.AppendLine("        {");
             sourceBuilder.AppendLine("            var root = document.rootVisualElement;");
             sourceBuilder.AppendLine("            if (root == null) return;");
@@ -174,11 +191,11 @@ namespace Leap.Forward.Idle.CodeGen
                     string elementName = clickAttr.ConstructorArguments[0].Value?.ToString() ?? "";
 
                     sourceBuilder.AppendLine($@"
-            var el_{method.Name} = root.Q<Button>(""{elementName}"");
+            var el_{method.Name} = UnityEngine.UIElements.UQueryExtensions.Q<UnityEngine.UIElements.Button>(root, ""{elementName}"");
             if (el_{method.Name} != null) 
                 el_{method.Name}.clicked += {method.Name};
             else 
-                Debug.LogError($""[IdleGenerator] Could not find Button with name '{elementName}' in {{document.name}}"");");
+                UnityEngine.Debug.LogError($""[IdleGenerator] Could not find Button with name '{elementName}' in {{document.name}}"");");
                 }
             }
 

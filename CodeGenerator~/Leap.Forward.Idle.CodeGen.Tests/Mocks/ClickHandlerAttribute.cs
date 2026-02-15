@@ -1,4 +1,6 @@
-﻿namespace Leap.Forward.IdleHelpers
+﻿using System;
+
+namespace Leap.Forward.IdleHelpers
 {
     [AttributeUsage(AttributeTargets.Method)]
     public class ClickHandlerAttribute : System.Attribute
