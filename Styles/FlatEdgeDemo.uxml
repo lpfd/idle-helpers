@@ -1,0 +1,17 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Packages/leap.forward.idle.helpers/Styles/FlatEdgeStyle.uss?fileID=7433441132597879392&amp;guid=ec5ef36f9eaf9d244bcbf6651b5f5f76&amp;type=3"/>
+    <ui:VisualElement style="flex-grow: 1;">
+        <ui:TabView>
+            <ui:Tab label="Tab" enabled="true">
+                <ui:ScrollView>
+                    <ui:Button text="Button"/>
+                    <ui:Button text="Disabled" enabled="false"/>
+                    <ui:Toggle label="Toggle" value="true"/>
+                    <ui:RadioButton label="Radio Button" value="true"/>
+                    <ui:Slider label="Slider" value="42" high-value="100"/>
+                </ui:ScrollView>
+            </ui:Tab>
+            <ui:Tab label="Tab"/>
+        </ui:TabView>
+    </ui:VisualElement>
+</ui:UXML>
