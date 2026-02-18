@@ -309,7 +309,23 @@ namespace Leap.Forward.IdleHelpers
         /// <summary> Returns a string formatted in scientific notation (e.g., "1.23e45"). </summary>
         public override string ToString()
         {
-            if (Exponent == 0) return Mantissa.ToString();
+            // Check if the number falls within the 1 to 999.999... range
+            if (Exponent >= 0 && Exponent <= 2)
+            {
+                if (Mantissa == 0.0) return "0";
+                //if (Exponent == 0) return Mantissa.ToString();
+
+                // Calculate the actual value for small numbers
+                double actualValue = Mantissa * Math.Pow(10, Exponent);
+
+                return Exponent switch
+                {
+                    0 => actualValue.ToString("F3"), // #.###
+                    1 => actualValue.ToString("F2"), // ##.##
+                    2 => actualValue.ToString("F1"), // ###.#
+                    _ => actualValue.ToString()      // Fallback (shouldn't be hit)
+                };
+            }
             return $"{Mantissa:F2}e{Exponent}";
         }
 
