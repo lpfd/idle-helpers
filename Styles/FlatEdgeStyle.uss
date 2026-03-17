@@ -1,43 +1,56 @@
+:root {
+    /* Colors */
+    --flat-edge-border: rgb(255, 255, 255);
+    --flat-edge-default-background: rgb(128, 128, 128);
+    --flat-edge-interactive-background: url('project://database/Packages/leap.forward.idle.helpers/Styles/Gradient.png');
+    --flat-edge-selected-background: url('project://database/Packages/leap.forward.idle.helpers/Styles/Selection.png');
+    --flat-edge-active-background: url('project://database/Packages/leap.forward.idle.helpers/Styles/GradientInv.png');
+    --flat-edge-disabled-background: url('project://database/Packages/leap.forward.idle.helpers/Styles/Disabled.png');
+}
+
 .unity-button {
+    background-image: var(--flat-edge-interactive-background);
+    -unity-background-image-tint-color: var(--flat-edge-default-background);
     border-width: 1px;
-    border-color: rgb(255, 255, 255);
+    border-color: var(--flat-edge-border);
     border-radius: 8px;
     padding: 8px 16px;
-    background-color: rgb(128, 128, 128);
     color: rgb(255, 255, 255);
     transition-duration: 0.1s;
 }
 
 .unity-button:hover {
-    background-color: rgb(153, 153, 153);
+    background-image: var(--flat-edge-selected-background);
     translate: 0 -2px;
 }
 
 .unity-button:active {
-    background-color: rgb(102, 102, 102);
+    background-image: var(--flat-edge-active-background);
     translate: 0 2px;
 }
 
 .unity-button:disabled,
 .unity-button:disabled:active {
+    background-image: var(--flat-edge-disabled-background);
     opacity: 1;
-    background-color: rgb(68, 68, 68);
     border-color: rgb(34, 34, 34);
     translate: 0 0;
 }
 
 .unity-tab__header {
+    background-image: var(--flat-edge-interactive-background);
+    -unity-background-image-tint-color: var(--flat-edge-default-background);
     border-width: 1px 1px 0 1px;
     border-color: rgb(255, 255, 255);
     border-radius: 8px 8px 0 0;
-    background-color: rgb(102, 102, 102);
     padding: 8px 16px;
     color: rgb(255, 255, 255);
     transition-duration: 0.1s;
 }
 
 .unity-tab__header:checked {
-    background-color: rgb(128, 128, 128);
+    background-image: var(--flat-edge-selected-background);
+    -unity-background-image-tint-color: var(--flat-edge-default-background);
 }
 
 .unity-tab-view__content-container {
@@ -51,12 +64,13 @@
 
 .unity-base-slider__dragger
 {
+    background-image: var(--flat-edge-interactive-background);
+    -unity-background-image-tint-color: var(--flat-edge-default-background);
     border-width: 1px;
     border-color: rgb(255, 255, 255);
     border-radius: 10px;
     min-width: 20px;
     min-height: 20px;
-    background-color: rgb(128, 128, 128);
     margin-top: 0px;
 }
 
